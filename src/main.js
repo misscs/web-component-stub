@@ -3,27 +3,51 @@
   // Create your component here
   // http://x-tags.org/docs
 
-  xtag.register('odd-noun', {
+  xtag.register('media-object', {
     lifecycle: {
       created: function() {
-        console.log('Created');
+        var tpl  = document.querySelector('.media-object');
+        var root = this.createShadowRoot();
 
-        this.xtag.textEl = document.createElement('strong');
-
-        this.xtag.spinnerContainer = document.createElement('div');
-        this.xtag.spinner = document.createElement('div');
-
-        this.xtag.spinnerContainer.className = 'spinner';
-
-        this.xtag.spinnerContainer.appendChild(this.xtag.spinner);
-        this.appendChild(this.xtag.spinnerContainer);
-        this.appendChild(this.xtag.textEl);
-
-
+        root.appendChild(document.importNode(tpl.content, true));
 
       },
       inserted: function() {
-        console.log('Inserted');
+
+
+      },
+      removed: function() {},
+      attributeChanged: function() {}
+    },
+    events: {
+
+    },
+    accessors: {
+
+    },
+    methods: {
+
+    }
+  });
+
+})();
+
+
+(function(){
+
+  // Create your component here
+  // http://x-tags.org/docs
+
+  xtag.register('canvas-drawer', {
+    lifecycle: {
+      created: function() {
+        var tpl  = document.querySelector('.off-canvas');
+        var root = this.createShadowRoot();
+        root.appendChild(document.importNode(tpl.content, true));
+
+      },
+      inserted: function() {
+
 
       },
       removed: function() {},

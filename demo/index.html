@@ -2,12 +2,19 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <title>Stub Demo - X-Tag</title>
-    <link rel="stylesheet" type="text/css" href="x-tag-components.css"/>
-	<link rel="stylesheet" type="text/css" href="../src/main.css"/>
+  <meta charset="utf-8" />
+
+  <title>WC: A Water Closet for Web Components</title>
+
+  <script type="text/javascript" src="../bower_components/platform/platform.js"></script>
+
+
+  <link rel="stylesheet" type="text/css" href="x-tag-components.css"/>
+  <link rel="stylesheet" type="text/css" href="../src/main.css"/>
+
+
+
   <!--
-    <script type="text/javascript" src="x-tag-components.js"></script>
     <script type="text/javascript" src="../src/main.js"></script>
     <script type="text/javascript">
       document.addEventListener('DOMComponentsLoaded', function(){
@@ -74,29 +81,63 @@
 </body>
 
   <script type="text/javascript">
+    /*https://github.com/mozbrick/brick-layout*/
 
-    var tpl  = document.querySelector('template');
+    (function () {
 
-    var mediaObjectProto = Object.create(HTMLElement.prototype);
+      var currentScript = document._currentScript || document.currentScript;
 
-    // In created, do ShadowDom stuffs
-    mediaObjectProto.createdCallback = function() {
-      // element that you call createShadowRoot = Shadow Host.
-      // It's the only piece visible to the user,
-      // it's where you would ask the user to supply your element with content.
-      var root = this.createShadowRoot();
+      var mediaObjectProto = Object.create(HTMLElement.prototype);
 
-      // Shadow Root == hidden from user; what the browser will render
-      // HTML and CSS protected
-      root.appendChild(document.importNode(tpl.content, true));
-    };
+      mediaObjectProto.openDrawer = function() {
+        this.setAttribute("open","");
+      };
+      mediaObjectProto.closeDrawer = function() {
+        this.removeAttribute("open");
+      };
+      mediaObjectProto.toggleDrawer = function() {
+        if (this.hasAttribute("open")) {
+          this.removeAttribute("open");
+        } else {
+          this.setAttribute("open","");
+        }
+      };
 
-    // Register
 
-    var mediaObject = document.registerElement('media-object', {
-      prototype: mediaObjectProto
-    });
+      var tpl  = document.querySelector('template');
 
+
+      // In created, do ShadowDom stuffs
+      mediaObjectProto.createdCallback = function() {
+
+        // fix styling for polyfill
+        if (Platform.ShadowCSS) {
+          var styles = tpl.content.querySelectorAll('style');
+          for (var i = 0; i < styles.length; i++) {
+            var style = styles[i];
+            var cssText = Platform.ShadowCSS.shimStyle(style, 'brick-layout');
+            Platform.ShadowCSS.addCssToDocument(cssText);
+            style.remove();
+          }
+        }
+
+
+        // element that you call createShadowRoot = Shadow Host.
+        // It's the only piece visible to the user,
+        // it's where you would ask the user to supply your element with content.
+        var root = this.createShadowRoot();
+
+        // Shadow Root == hidden from user; what the browser will render
+        // HTML and CSS protected
+        root.appendChild(tpl.content.cloneNode(true));
+      };
+
+      // Register
+
+      window.mediaObject = document.registerElement('media-object', {
+        prototype: mediaObjectProto
+      });
+    })();
   </script>
 
 

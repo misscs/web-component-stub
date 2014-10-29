@@ -3,7 +3,7 @@
   "description": "",
   "version": "0.1.0",
   "keywords": [
-    "web-components",    
+    "web-components",
     "x-tag"
   ],
   "main": [
@@ -11,6 +11,7 @@
     "src/main.css"
   ],
   "dependencies": {
-    "x-tag-core": "*"
+    "x-tag-core": "*",
+    "polymer": "Polymer/polymer#~0.4.2"
   }
 }
