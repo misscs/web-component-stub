@@ -1,0 +1,26 @@
+  <template>
+    <style>
+      content[select="h1"]::content * {
+        font-weight: bold;
+        color: rebeccapurple;
+      }
+
+      content[select="img"]::content * {
+        width: 25%;
+        float: right;
+      }
+
+      .details {
+        float: left;
+        margin-left: 1rem;
+      }
+
+    </style>
+
+
+    <content select="img"></content>
+    <div class="details">
+      <content select="h1"></content>
+      <content select="p"></content>
+    </div>
+  </template>

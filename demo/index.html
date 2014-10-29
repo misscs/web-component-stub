@@ -6,19 +6,98 @@
     <title>Stub Demo - X-Tag</title>
     <link rel="stylesheet" type="text/css" href="x-tag-components.css"/>
 	<link rel="stylesheet" type="text/css" href="../src/main.css"/>
+  <!--
+    <script type="text/javascript" src="x-tag-components.js"></script>
+    <script type="text/javascript" src="../src/main.js"></script>
+    <script type="text/javascript">
+      document.addEventListener('DOMComponentsLoaded', function(){
+        console.log('Loaded!');
+      }, false);
 
-    <script type="text/javascript" src="x-tag-components.js"></script> 
-    <script type="text/javascript" src="../src/main.js"></script>      
+    </script>
+  -->
+
 	<style>
+    h1 {
+      color: yellow;
+    }
+
+    p {
+      color: green;
+    }
 
 	</style>
 </head>
 
-<body>
+<body id="slides">
 
-	<h2>Create a Demo</h2>
+  <media-object>
+    <img src="http://userserve-ak.last.fm/serve/500/10595783/Shadow+Host+band_2008_9.jpg">
+    <h1>Shadow Host</h1>
+    <p>Around before there was the ShadowDom</p>
+  </media-object>
 
+  <media-object>
+    <img src="http://www.jmu.edu/monty/wm_library/BigMan01003.gif">
+    <h1>James Madison</h1>
+    <p>5 ft 4 in (163 cm)</p>
+  </media-object>
+
+
+  <template>
+    <style>
+      content[select="h1"]::content * {
+        font-weight: bold;
+        color: rebeccapurple;
+      }
+
+      content[select="img"]::content * {
+        width: 25%;
+        float: right;
+      }
+
+      .details {
+        float: left;
+        margin-left: 1rem;
+      }
+
+    </style>
+
+
+    <content select="img"></content>
+    <div class="details">
+      <content select="h1"></content>
+      <content select="p"></content>
+    </div>
+  </template>
 
 </body>
+
+  <script type="text/javascript">
+
+    var tpl  = document.querySelector('template');
+
+    var mediaObjectProto = Object.create(HTMLElement.prototype);
+
+    // In created, do ShadowDom stuffs
+    mediaObjectProto.createdCallback = function() {
+      // element that you call createShadowRoot = Shadow Host.
+      // It's the only piece visible to the user,
+      // it's where you would ask the user to supply your element with content.
+      var root = this.createShadowRoot();
+
+      // Shadow Root == hidden from user; what the browser will render
+      // HTML and CSS protected
+      root.appendChild(document.importNode(tpl.content, true));
+    };
+
+    // Register
+
+    var mediaObject = document.registerElement('media-object', {
+      prototype: mediaObjectProto
+    });
+
+  </script>
+
 
 </html>
